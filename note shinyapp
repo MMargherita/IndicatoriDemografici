@@ -1,0 +1,51 @@
+Note shinyapp per StatisticAll
+creare una piattaforma interattiva dove esplorare le caratteristiche della
+popolazione italiana nelle diverse regioni e nel tempo
+
+-mettere spiegazioni relative all'indicatore e ai risultati, sotto i grafici
+
+
+
+Idee contenutistiche:
+
+-Indicatori demografici per regione in classifica
+-Indicatori per provincia
+
+->Indicatori demografici ISTAT (disponibili dal 2002 al 2019 o 2020)<-
+  tasso di natalità (per mille abitanti)
+  tasso di mortalità (per mille abitanti)
+  crescita naturale (per mille abitanti)
+  tasso di nuzialità (per mille abitanti)
+  saldo migratorio interno (per mille abitanti)
+  saldo migratorio con l'estero (per mille abitanti)
+  saldo migratorio per altro motivo (per mille abitanti)
+  saldo migratorio totale (per mille abitanti)
+  tasso di crescita totale (per mille abitanti)
+  numero medio di figli per donna
+  età media della madre al parto
+  speranza di vita alla nascita - maschi
+  speranza di vita a 65 anni - maschi
+  speranza di vita alla nascita - femmine
+  speranza di vita a 65 anni - femmine
+  speranza di vita alla nascita - totale
+  speranza di vita a 65 anni - totale
+  popolazione 0-14 anni al 1° gennaio (valori percentuali) - al 1° gennaio
+  popolazione 15-64 anni (valori percentuali) - al 1° gennaio
+  popolazione 65 anni e più (valori percentuali) - al 1° gennaio
+  indice di dipendenza strutturale (valori percentuali) - al 1° gennaio
+  indice di dipendenza degli anziani (valori percentuali) - al 1° gennaio
+  indice di vecchiaia (valori percentuali) - al 1° gennaio
+  età media della popolazione - al 1° gennaio
+
+
+
+->piramide delle età nel tempo, per regione?
+
+
+
+->previsioni demograficeh da istat
+  tasso di natalità, mortalità, crescita naturale, tasso migratorio dall'estero
+  e per l'estero, saldo migratorio, tasso di crescita, numero medio di figli per
+  donna, speranza di vita alla nascita e 65, popolazione 0-14 15-64 65+ 85+, 
+  indice di dipendenza strutturale, indice di dipendenza degli anziani, indice
+  di vecchiaia, età media della popolazione
