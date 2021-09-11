@@ -55,10 +55,10 @@ indicatore <- factor(as.factor(indicatore), levels(as.factor(indicatore))[c(20,1
 anno <- unique(data_reg$TIME)
 
 # caption
-captions <- read_excel("captions.xlsx") %>% 
-  filter(!indicatori%in% c("Saldo migratorio per altro motivo (per mille abitanti)",
-                                  "Saldo migratorio interno (per mille abitanti)",
-                                  "Saldo migratorio totale (per mille abitanti)")) %>% 
+captions <- read_excel("captions2.xlsx") %>% 
+  #filter(!indicatori%in% c("Saldo migratorio per altro motivo (per mille abitanti)",
+  #                                "Saldo migratorio interno (per mille abitanti)",
+  #                                "Saldo migratorio totale (per mille abitanti)")) %>% 
   select(`descrizione indicatori`)
 capt <- captions$`descrizione indicatori`
 names(capt) <- names(indicatore)
@@ -67,10 +67,10 @@ names(capt) <- names(indicatore)
 
 # UI and Server -----------------------------------------------------------
 # Define UI for application that draws a plot
-ui <- fluidPage(#theme = shinytheme("slate"),
+ui <- fluidPage(theme = shinytheme("slate"),
                 
                 # Application title
-                titlePanel(NULL),
+                titlePanel("Indicatori demografici"),
                 
                 # Sidebar with a slider input for number of bins 
                 sidebarLayout(
