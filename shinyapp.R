@@ -33,18 +33,21 @@ data_reg <- data %>%
                             "Nord-ovest","Nord-est","Mezzogiorno",
                             "Provincia Autonoma Trento",
                             "Provincia Autonoma Bolzano / Bozen"),
-         !`Tipo indicatore`%in% c("saldo migratorio per altro motivo (per mille abitanti)",
-         "saldo migratorio interno (per mille abitanti)",
-         "saldo migratorio totale (per mille abitanti)")) %>% 
+         !`Tipo indicatore`%in% c("Saldo migratorio per altro motivo (per mille abitanti)",
+         "Saldo migratorio interno (per mille abitanti)",
+         "Saldo migratorio totale (per mille abitanti)")) %>% 
   mutate(Territorio = as.factor(Territorio),
-         Ripartizione = as.factor(case_when(Territorio %in% c("Piemonte","Valle d'Aosta / Vallée d'Aoste",
-                                                              "Liguria", "Lombardia") ~ "Nord-ovest",
-                                            Territorio %in% c("Trentino Alto Adige / Südtirol","Veneto",
-                                                              "Friuli-Venezia Giulia", "Emilia-Romagna") ~ "Nord-est",
+         # Ripartizione = as.factor(case_when(Territorio %in% c("Piemonte","Valle d'Aosta / Vallée d'Aoste",
+         #                                                      "Liguria", "Lombardia") ~ "Nord-ovest",
+         #                                    Territorio %in% c("Trentino Alto Adige / Südtirol","Veneto",
+         #                                                      "Friuli-Venezia Giulia", "Emilia-Romagna") ~ "Nord-est",
+         #                                    Territorio %in% c("Toscana","Umbria","Marche","Lazio") ~ "Centro",
+         #                                    Territorio %in% c("Abruzzo","Molise","Campania","Puglia",
+         #                                                      "Basilicata","Calabria") ~ "Sud",
+         #                                    Territorio %in% c("Sicilia","Sardegna") ~ "Isole")))
+         Ripartizione = as.factor(case_when(Territorio %in% c("Piemonte","Valle d'Aosta / Vallée d'Aoste","Liguria", "Lombardia","Trentino Alto Adige / Südtirol","Veneto","Friuli-Venezia Giulia", "Emilia-Romagna") ~ "Nord",
                                             Territorio %in% c("Toscana","Umbria","Marche","Lazio") ~ "Centro",
-                                            Territorio %in% c("Abruzzo","Molise","Campania","Puglia",
-                                                              "Basilicata","Calabria") ~ "Sud",
-                                            Territorio %in% c("Sicilia","Sardegna") ~ "Isole")))
+                                            Territorio %in% c("Abruzzo","Molise","Campania","Puglia","Basilicata","Calabria","Sicilia","Sardegna") ~ "Sud e Isole")))
 
 levels(data_reg$Territorio)[levels(data_reg$Territorio) == "Valle d'Aosta / Vallée d'Aoste"] <- "Valle d'Aosta"
 levels(data_reg$Territorio)[levels(data_reg$Territorio) == "Trentino Alto Adige / Südtirol"] <- "Trentino Alto Adige"
@@ -58,18 +61,18 @@ anno <- unique(data_reg$TIME)
 
 # caption
 captions <- read_excel("captions2.xlsx") %>% 
-  #filter(!indicatori%in% c("Saldo migratorio per altro motivo (per mille abitanti)",
-  #                                "Saldo migratorio interno (per mille abitanti)",
-  #                                "Saldo migratorio totale (per mille abitanti)")) %>% 
+  filter(!indicatori%in% c("Saldo migratorio per altro motivo (per mille abitanti)",
+                                 "Saldo migratorio interno (per mille abitanti)",
+                                 "Saldo migratorio totale (per mille abitanti)")) %>%
   select(`descrizione indicatori`)
 capt <- captions$`descrizione indicatori`
 names(capt) <- names(indicatore)
-# caption <- "prova"
+
 
 
 # UI and Server -----------------------------------------------------------
 # Define UI for application that draws a plot
-ui <- fluidPage(theme = shinytheme("slate"),
+ui <- fluidPage(theme = shinytheme("cyborg"),
                 
                 # Application title
                 titlePanel("Indicatori demografici"),
@@ -96,7 +99,7 @@ ui <- fluidPage(theme = shinytheme("slate"),
                 ),
                   # Show plot 
                   mainPanel(
-                    plotOutput("plot", height = "400px"),
+                    plotOutput("plot", height = "500px"),
                     textOutput("caption")
                   )
                 )
@@ -117,20 +120,24 @@ server <- function(input, output) {
         #mutate(`Tipo indicatore` %>% as.factor() = factor(`Tipo indicatore`, levels(`Tipo indicatore`)[23,14,12,24,15,13,2,3,1,10,11,8,9,16,17,18,19,20,21,22,4,5,6,7])) %>% 
         # arrange(desc(Value)) %>% 
         ggplot(aes(x = Value, y = reorder(Territorio,Value),
-                   color = Ripartizione)) +
+                   color = fct_rev(Ripartizione))) +
         geom_point(size = 3)+
         labs(x = element_blank(),
              y = element_blank(),
              color = "Ripartizione\ngeografica",
-             title = str_wrap(element_text(paste(indic, "nelle regioni italiane. Anno", an)), 80),
+             title = str_wrap(element_text(paste(indic, "nelle regioni italiane. Anno",
+                                                 an)), 80),
              caption = "Fonte: Istat")+
         dark_theme_minimal()+
+        # theme_minimal()+
         theme(text = element_text(size = 13),
               axis.text.y = element_text(size = 10),
               legend.position = "bottom")+
-        scale_color_viridis_d(option = "B", begin = 0.2)
+        scale_color_viridis_d(option = "B",
+                              begin = 0.2,
+                              end = 0.8)
 
-  }, width = 800, height = 400, res = 90)
+  }, width = 800, height = 500, res = 90)
   
   
   
