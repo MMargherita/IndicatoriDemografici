@@ -9,6 +9,8 @@ library(shinythemes)
 library(stringr)
 library(forcats)
 library(magrittr)
+library(ggdark)
+library(hrbrthemes)
 
 # Data manipulation -------------------------------------------------------
 # read data
@@ -74,7 +76,8 @@ ui <- fluidPage(theme = shinytheme("slate"),
                 
                 # Sidebar with a slider input for number of bins 
                 sidebarLayout(
-                  sidebarPanel(selectizeInput( # choose the indicatore
+                  sidebarPanel(width = 4,
+                               selectizeInput( # choose the indicatore
                                  "indicatore",
                                  label     = "Scegli l'indicatore",
                                  choices   = indicatore, 
@@ -93,7 +96,7 @@ ui <- fluidPage(theme = shinytheme("slate"),
                 ),
                   # Show plot 
                   mainPanel(
-                    plotOutput("plot", height = "300px"),
+                    plotOutput("plot", height = "400px"),
                     textOutput("caption")
                   )
                 )
@@ -119,13 +122,15 @@ server <- function(input, output) {
         labs(x = element_blank(),
              y = element_blank(),
              color = "Ripartizione\ngeografica",
-             title = element_text(paste(indic, "nelle regioni italiane. Anno", an)),
+             title = str_wrap(element_text(paste(indic, "nelle regioni italiane. Anno", an)), 80),
              caption = "Fonte: Istat")+
-        theme_minimal()+
-        theme(text = element_text(size = 15),
-              legend.position = "bottom")
+        dark_theme_minimal()+
+        theme(text = element_text(size = 13),
+              axis.text.y = element_text(size = 10),
+              legend.position = "bottom")+
+        scale_color_viridis_d(option = "B", begin = 0.2)
 
-  })#, width = 800, height = 315, res = 100)
+  }, width = 800, height = 400, res = 90)
   
   
   
