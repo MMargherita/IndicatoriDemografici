@@ -12,7 +12,7 @@ library(magrittr)
 library(ggdark)
 library(hrbrthemes)
 
-# Data manipulation -------------------------------------------------------
+# Data manipulation ------------------------------------------------------------
 # read data
 data <- read_delim("DCIS_INDDEMOG1_21072021152359210.csv",
                    ";",
@@ -24,8 +24,9 @@ data <- read_delim("DCIS_INDDEMOG1_21072021152359210.csv",
                    trim_ws = TRUE)
 
 
-# data manipulation
+# filter what we want and adjust levels
 data_reg <- data %>% 
+  arrange(`Tipo indicatore`) %>% 
   filter(str_length(ITTER107)<5,
          TIME<2020,
          !Territorio %in% c("Nord","Centro","Sud", "Isole",
@@ -34,17 +35,9 @@ data_reg <- data %>%
                             "Provincia Autonoma Trento",
                             "Provincia Autonoma Bolzano / Bozen"),
          !`Tipo indicatore`%in% c("Saldo migratorio per altro motivo (per mille abitanti)",
-         "Saldo migratorio interno (per mille abitanti)",
-         "Saldo migratorio totale (per mille abitanti)")) %>% 
+                                  "Saldo migratorio interno (per mille abitanti)",
+                                  "Saldo migratorio totale (per mille abitanti)")) %>% 
   mutate(Territorio = as.factor(Territorio),
-         # Ripartizione = as.factor(case_when(Territorio %in% c("Piemonte","Valle d'Aosta / Vallée d'Aoste",
-         #                                                      "Liguria", "Lombardia") ~ "Nord-ovest",
-         #                                    Territorio %in% c("Trentino Alto Adige / Südtirol","Veneto",
-         #                                                      "Friuli-Venezia Giulia", "Emilia-Romagna") ~ "Nord-est",
-         #                                    Territorio %in% c("Toscana","Umbria","Marche","Lazio") ~ "Centro",
-         #                                    Territorio %in% c("Abruzzo","Molise","Campania","Puglia",
-         #                                                      "Basilicata","Calabria") ~ "Sud",
-         #                                    Territorio %in% c("Sicilia","Sardegna") ~ "Isole")))
          Ripartizione = as.factor(case_when(Territorio %in% c("Piemonte","Valle d'Aosta / Vallée d'Aoste","Liguria", "Lombardia","Trentino Alto Adige / Südtirol","Veneto","Friuli-Venezia Giulia", "Emilia-Romagna") ~ "Nord",
                                             Territorio %in% c("Toscana","Umbria","Marche","Lazio") ~ "Centro",
                                             Territorio %in% c("Abruzzo","Molise","Campania","Puglia","Basilicata","Calabria","Sicilia","Sardegna") ~ "Sud e Isole")))
@@ -53,19 +46,25 @@ levels(data_reg$Territorio)[levels(data_reg$Territorio) == "Valle d'Aosta / Vall
 levels(data_reg$Territorio)[levels(data_reg$Territorio) == "Trentino Alto Adige / Südtirol"] <- "Trentino Alto Adige"
 data_reg$Ripartizione <- factor(data_reg$Ripartizione,levels(data_reg$Ripartizione)[c(3,4,1,5,2)])
 
+anno <- unique(data_reg$TIME)
+
 indicatore <- as.factor(unique(data_reg$`Tipo indicatore`))
 names(indicatore) <- unique(data_reg$`Tipo indicatore`)
 levels(indicatore)
 indicatore <- sort(factor(as.factor(indicatore), levels(as.factor(indicatore))[c(17,15,16,14,12,13,19,21,20,7,2,3,8,9,10,18,1,11,4,5,6)]))
-anno <- unique(data_reg$TIME)
 
-# caption
-captions <- read_excel("captions2.xlsx") %>% 
+
+# captions
+captions <- read_excel("captions2.xlsx") %>%
+  arrange(indicatori)%>% 
   filter(!indicatori%in% c("Saldo migratorio per altro motivo (per mille abitanti)",
-                                 "Saldo migratorio interno (per mille abitanti)",
-                                 "Saldo migratorio totale (per mille abitanti)")) %>%
+                           "Saldo migratorio interno (per mille abitanti)",
+                           "Saldo migratorio totale (per mille abitanti)")) %>% 
   select(`descrizione indicatori`)
+
 capt <- captions$`descrizione indicatori`
+
+capt <- capt[c(15,15,15,14,14,14,19,21,20,7,2,3,8,9,10,18,1,11,4,5,6)]
 names(capt) <- names(indicatore)
 
 
@@ -75,7 +74,9 @@ names(capt) <- names(indicatore)
 ui <- fluidPage(theme = shinytheme("cyborg"),
                 
                 # Application title
-                titlePanel("Indicatori demografici"),
+                titlePanel(
+                  # h3("Visualizza la graduatoria per regione dei principali indicatori demografici, dal 2002 al 2019", align = "center")),
+                  "Visualizza i principali indicatori demografici"),
                 
                 # Sidebar with a slider input for number of bins 
                 sidebarLayout(
@@ -100,7 +101,8 @@ ui <- fluidPage(theme = shinytheme("cyborg"),
                   # Show plot 
                   mainPanel(
                     plotOutput("plot", height = "500px", width = "100%"),
-                    textOutput("caption", width = "100%")
+                    textOutput("caption")
+                               #, width = "100%")
                   )
                 )
 )
@@ -117,8 +119,6 @@ server <- function(input, output) {
       data_reg %>% 
         filter(`Tipo indicatore` == indic,
                TIME == an) %>%
-        #mutate(`Tipo indicatore` %>% as.factor() = factor(`Tipo indicatore`, levels(`Tipo indicatore`)[23,14,12,24,15,13,2,3,1,10,11,8,9,16,17,18,19,20,21,22,4,5,6,7])) %>% 
-        # arrange(desc(Value)) %>% 
         ggplot(aes(x = Value, y = reorder(Territorio,Value),
                    color = fct_rev(Ripartizione))) +
         geom_point(size = 3.5)+
@@ -129,7 +129,6 @@ server <- function(input, output) {
                                                  an)), 80),
              caption = "Fonte dati: Istat\nRealizzato da: M. Moretti, C. Strozza, C. Fortunato (DemograficaMente)")+
         dark_theme_minimal()+
-        # theme_minimal()+
         theme(text = element_text(size = 13),
               axis.text.y = element_text(size = 10),
               legend.position = "bottom")+
