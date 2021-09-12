@@ -56,7 +56,7 @@ data_reg$Ripartizione <- factor(data_reg$Ripartizione,levels(data_reg$Ripartizio
 indicatore <- as.factor(unique(data_reg$`Tipo indicatore`))
 names(indicatore) <- unique(data_reg$`Tipo indicatore`)
 levels(indicatore)
-indicatore <- factor(as.factor(indicatore), levels(as.factor(indicatore))[c(20,18,19,17,15,16,22,24,23,2,7,1,21,8,9,10,3,4,5,6,11,12,13,14)])
+indicatore <- sort(factor(as.factor(indicatore), levels(as.factor(indicatore))[c(17,15,16,14,12,13,19,21,20,7,2,3,8,9,10,18,1,11,4,5,6)]))
 anno <- unique(data_reg$TIME)
 
 # caption
@@ -99,8 +99,8 @@ ui <- fluidPage(theme = shinytheme("cyborg"),
                 ),
                   # Show plot 
                   mainPanel(
-                    plotOutput("plot", height = "500px"),
-                    textOutput("caption")
+                    plotOutput("plot", height = "500px", width = "100%"),
+                    textOutput("caption", width = "100%")
                   )
                 )
 )
@@ -137,7 +137,7 @@ server <- function(input, output) {
                               begin = 0.3,
                               end = 0.8)
 
-  }, width = 800, height = 500, res = 90)
+  }, height = 500, res = 90)
   
   
   
