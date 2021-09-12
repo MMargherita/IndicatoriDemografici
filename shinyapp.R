@@ -77,6 +77,7 @@ ui <- fluidPage(theme = shinytheme("cyborg"),
                 titlePanel(
                   # h3("Visualizza la graduatoria per regione dei principali indicatori demografici, dal 2002 al 2019", align = "center")),
                   "Visualizza i principali indicatori demografici"),
+                # "Indicatori demografici
                 
                 # Sidebar with a slider input for number of bins 
                 sidebarLayout(
