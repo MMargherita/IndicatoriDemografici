@@ -121,20 +121,20 @@ server <- function(input, output) {
         # arrange(desc(Value)) %>% 
         ggplot(aes(x = Value, y = reorder(Territorio,Value),
                    color = fct_rev(Ripartizione))) +
-        geom_point(size = 3)+
+        geom_point(size = 3.5)+
         labs(x = element_blank(),
              y = element_blank(),
-             color = "Ripartizione\ngeografica",
+             color = "Ripartizione geografica",
              title = str_wrap(element_text(paste(indic, "nelle regioni italiane. Anno",
                                                  an)), 80),
-             caption = "Fonte: Istat")+
+             caption = "Fonte dati: Istat\nRealizzato da: M. Moretti, C. Strozza, C. Fortunato (DemograficaMente)")+
         dark_theme_minimal()+
         # theme_minimal()+
         theme(text = element_text(size = 13),
               axis.text.y = element_text(size = 10),
               legend.position = "bottom")+
         scale_color_viridis_d(option = "B",
-                              begin = 0.2,
+                              begin = 0.3,
                               end = 0.8)
 
   }, width = 800, height = 500, res = 90)
