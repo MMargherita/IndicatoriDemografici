@@ -88,8 +88,6 @@ ui <- navbarPage(
     h6(tags$sup(1),"Sapienza Università di Roma,",tags$sup(2)," Interdisciplinary Centre on Population Dynamics"),
     
     # prove per inserire l'immagine:
-    
-    # includeMarkdown("introduction.Rmd"),
     img(src = "logo-sdu-cpop.png", height = 40, width = 100) 
     
     
