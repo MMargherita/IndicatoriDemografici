@@ -55,7 +55,7 @@ indicatore <- sort(factor(as.factor(indicatore), levels(as.factor(indicatore))[c
 
 
 # captions
-captions <- read_excel("captions2.xlsx") %>%
+captions <- read_excel("captions.xlsx") %>%
   arrange(indicatori)%>% 
   filter(!indicatori%in% c("Saldo migratorio per altro motivo (per mille abitanti)",
                            "Saldo migratorio interno (per mille abitanti)",
@@ -77,7 +77,7 @@ ui <- fluidPage(theme = shinytheme("cyborg"),
                 titlePanel(
                   # h3("Visualizza la graduatoria per regione dei principali indicatori demografici, dal 2002 al 2019", align = "center")),
                   "Visualizza i principali indicatori demografici"),
-                # "Indicatori demografici
+                # "Indicatori demografici),
                 
                 # Sidebar with a slider input for number of bins 
                 sidebarLayout(
@@ -128,7 +128,7 @@ server <- function(input, output) {
              color = "Ripartizione geografica",
              title = str_wrap(element_text(paste(indic, "nelle regioni italiane. Anno",
                                                  an)), 80),
-             caption = "Fonte dati: Istat\nRealizzato da: M. Moretti, C. Strozza, C. Fortunato (DemograficaMente)")+
+             caption = "Fonte dati: Istat\nRealizzato da: M. Moretti, C. Strozza, C. Fortunato (Demografica...Mente)")+
         dark_theme_minimal()+
         theme(text = element_text(size = 13),
               axis.text.y = element_text(size = 10),
