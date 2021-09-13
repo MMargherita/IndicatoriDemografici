@@ -128,7 +128,7 @@ server <- function(input, output) {
              color = "Ripartizione geografica",
              title = str_wrap(element_text(paste(indic, "nelle regioni italiane. Anno",
                                                  an)), 80),
-             caption = "Fonte dati: Istat\nRealizzato da: M. Moretti, C. Strozza, C. Fortunato (Demografica...Mente)")+
+             caption = "Fonte dati: Istat\nRealizzato da: M. Moretti, C. Strozza, C. Fortunato (Demografica...Mente!)")+
         dark_theme_minimal()+
         theme(text = element_text(size = 13),
               axis.text.y = element_text(size = 10),
@@ -137,7 +137,7 @@ server <- function(input, output) {
                               begin = 0.3,
                               end = 0.8)
 
-  }, height = 500, res = 90)
+  }, height = 500, res = 100)
   
   
   
