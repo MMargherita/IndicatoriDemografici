@@ -1,0 +1,14 @@
+name: IndicatoriDemografici
+title: IndicatoriDemografici
+username:
+account: margherita-moretti
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 4648175
+bundleId: 5031137
+url: https://margherita-moretti.shinyapps.io/IndicatoriDemografici/
+when: 1631604658.34373
+lastSyncTime: 1631604658.34373
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: README.md|altro
